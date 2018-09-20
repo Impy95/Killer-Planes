@@ -20,6 +20,17 @@ namespace GEX {
 		return velocity_;
 	}
 
+	void Entity::accelerate(sf::Vector2f velocity)
+	{
+		velocity_ += velocity;
+	}
+
+	void Entity::accelerate(float vx, float vy)
+	{
+		velocity_.x += vx;
+		velocity_.y += vy;
+	}
+
 	void GEX::Entity::updateCurrent(sf::Time dt)
 	{
 		move(velocity_ * dt.asSeconds());

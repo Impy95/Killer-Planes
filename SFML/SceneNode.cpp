@@ -1,4 +1,6 @@
 #include "SceneNode.h"
+#include "Category.h"
+#include "Command.h"
 #include <algorithm>
 #include <cassert>
 
@@ -35,6 +37,22 @@ namespace GEX {
 	{
 		updateCurrent(dt);
 		updateChildren(dt);
+	}
+
+	void SceneNode::onCommand(const Command& command, sf::Time dt)
+	{
+		// Command current node
+		if (command.category & getCategory())
+			command.action(*this, dt);
+
+		// Command children
+		for (Ptr& child : children_)
+			child->onCommand(command, dt);
+	}
+
+	unsigned int SceneNode::getCategory() const
+	{
+		return Category::Type::None;
 	}
 
 	sf::Vector2f SceneNode::getWorldPosition() const

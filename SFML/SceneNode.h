@@ -7,8 +7,12 @@
 #include <vector>
 #include <memory>
 
+
+
 namespace GEX
 {
+	// forward declaration
+	struct Command;
 	class SceneNode : public sf::Transformable, public sf::Drawable
 	{
 	public:
@@ -24,6 +28,8 @@ namespace GEX
 		Ptr						detachChild(const SceneNode& ptr);
 
 		void					update(sf::Time dt);
+		void					onCommand(const Command& command, sf::Time dt);
+		virtual unsigned int	getCategory() const;
 
 		sf::Vector2f			getWorldPosition() const;
 		sf::Transform			getWorldTransform() const;
