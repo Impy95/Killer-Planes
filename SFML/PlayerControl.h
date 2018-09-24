@@ -24,11 +24,12 @@ namespace GEX {
 	public:
 		PlayerControl();
 
-		void		handleEvent(const sf::Event& event, CommandQueue& commands);
-		void		handleRealtimeInput(CommandQueue& commands);
+		void			handleEvent(const sf::Event& event, CommandQueue& commands);
+		void			handleRealtimeInput(CommandQueue& commands);
 
 	private:
-		void		initalizeActions();
+		void			initalizeActions();
+		static bool		isRealTimeAction(Action action);
 
 
 	private:

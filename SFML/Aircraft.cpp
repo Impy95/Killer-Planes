@@ -1,4 +1,5 @@
 #include "Aircraft.h"
+#include "Category.h"
 
 namespace GEX {
 	TextureID toTextureID(AircraftType type)
@@ -29,5 +30,18 @@ namespace GEX {
 	void GEX::Aircraft::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 	{
 		target.draw(sprite_, states);
+	}
+	unsigned int Aircraft::getCategory() const
+	{
+		switch (type_)
+		{
+		case AircraftType::Eagle:
+			return Category::PlayerAircraft;
+			break;
+
+		default:
+			return Category::EnemyAircraft;
+			break;
+		}
 	}
 }

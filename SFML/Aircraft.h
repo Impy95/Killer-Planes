@@ -15,6 +15,7 @@ namespace GEX {
 						Aircraft(AircraftType type, const TextureManager& textures);
 
 		virtual void	drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+		unsigned int	getCategory() const override;
 
 	private:
 		sf::Sprite		sprite_;

@@ -10,7 +10,9 @@
 #include "SpriteNode.h"
 #include "TextureManager.h"
 #include "Aircraft.h"
+#include "CommandQueue.h"
 
+// forward declaration
 namespace sf
 {
 	class RenderWindow;
@@ -24,9 +26,12 @@ namespace GEX {
 		void						update(sf::Time dt);
 		void						draw();
 
+		CommandQueue&				getCommandQueue();
 	private:
 		void						loadTextures();
 		void						buildScene();
+		void						adaptPlayerPosition();
+		void						adaptPlayerVelocity();
 
 	private:
 		enum Layer 
@@ -42,6 +47,8 @@ namespace GEX {
 
 		SceneNode					sceneGraph_;
 		std::vector<SceneNode*>		sceneLayer_;
+
+		CommandQueue				commandQueue_;
 
 		sf::FloatRect				worldBounds_;
 		sf::Vector2f				spawnPosition_;

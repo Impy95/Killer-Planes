@@ -5,44 +5,35 @@
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
 #include "World.h"
+#include "PlayerControl.h"
 
-class Game
-{
-public:
-	Game();
-	~Game();
+namespace GEX {
+	class Game
+	{
+	public:
+		Game();
+		~Game();
 
-	void				run();
+		void				run();
 
-private:
-	void				processEvents();
-	void				update(sf::Time deltaTime);
-	void				render();
+	private:
+		void				processEvents();
+		void				update(sf::Time deltaTime);
+		void				render();
 
-	void				handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-	void				updateStatistics(sf::Time deltaTime);
-	//void				loadTextures();
-	//void				drawRoundingBox();
+		void				handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+		void				updateStatistics(sf::Time deltaTime);
 
-private:
-	//bool				isMovingRight;
-	//bool				isMovingLeft;
-	//bool				isMovingUp;
-	//bool				isMovingDown;
-	//bool				isRotatingRight;
-	//bool				isRotatingLeft;
+	private:
+		sf::RenderWindow	window_;
+		World				world_;
 
-	sf::RenderWindow	window_;
-	GEX::World				world_;
-	//sf::Sprite			player_;
-	//GEX::TextureManager	textures_;
+		PlayerControl		player_;
 
-	sf::Text			statisticsText_;
-	sf::Time			statisticsUpdateTime_;
-	unsigned int		statisticsNumFrames_;
-	sf::Font			font_;
-
-	//sf::Vector2f		velocity_;
-	//float				angularVelocity_;
-};
+		sf::Text			statisticsText_;
+		sf::Time			statisticsUpdateTime_;
+		unsigned int		statisticsNumFrames_;
+		sf::Font			font_;
+	};
+}
 

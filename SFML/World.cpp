@@ -25,28 +25,64 @@ namespace GEX {
 		// scroll the world
 		worldView_.move(0.f, scrollSpeeds_ * dt.asSeconds());
 
+		playerAircraft_->setVelocity(0.f, 0.f);
+
+		// run all the commands in the command queue
+		while (!commandQueue_.isEmpty())
+			sceneGraph_.onCommand(commandQueue_.pop(), dt);
+
+		adaptPlayerVelocity();
+		sceneGraph_.update(dt);
+		adaptPlayerPosition();
+
 		// zoom a little
 		// worldView_.zoom(1.001);	
 		// rotate a little
 		// worldView_.rotate(.1);
 
 		// move player
-		sf::Vector2f pos = playerAircraft_->getPosition();
-		float bounds = worldView_.getSize().x;
+		//sf::Vector2f pos = playerAircraft_->getPosition();
+		//float bounds = worldView_.getSize().x;
 
-		if (pos.x < 120.f || pos.x > bounds - 120.f)
-		{
-			playerAircraft_->setVelocity(
-				sf::Vector2f(	playerAircraft_->getVelocity().x * -1, 
-								playerAircraft_->getVelocity().y));
-		}
-		sceneGraph_.update(dt);
+		//if (pos.x < 120.f || pos.x > bounds - 120.f)
+		//{
+		//	playerAircraft_->setVelocity(
+		//		sf::Vector2f(	playerAircraft_->getVelocity().x * -1, 
+		//						playerAircraft_->getVelocity().y));
+		//}
+	}
+
+	void World::adaptPlayerPosition()
+	{
+		const float BORDER_DISTANCE = 40.f;
+		sf::FloatRect viewBounds(worldView_.getCenter() - worldView_.getSize() / 2.f, worldView_.getSize());
+
+		sf::Vector2f position = playerAircraft_->getPosition();
+		position.x = std::max(position.x, viewBounds.left + BORDER_DISTANCE);
+		position.x = std::min(position.x, viewBounds.left + viewBounds.width - BORDER_DISTANCE);
+
+		position.y = std::max(position.y, viewBounds.top + BORDER_DISTANCE);
+		position.y = std::min(position.y, viewBounds.top + viewBounds.height - BORDER_DISTANCE);
+
+		playerAircraft_->setPosition(position);
+	}
+
+	void World::adaptPlayerVelocity()
+	{
+		sf::Vector2f velocity = playerAircraft_->getVelocity();
+		if (velocity.x != 0.f && velocity.y != 0.f)
+			playerAircraft_->setVelocity(velocity / std::sqrt(2.f));
 	}
 
 	void World::draw()
 	{
 		window_.setView(worldView_);
 		window_.draw(sceneGraph_);
+	}
+
+	CommandQueue & World::getCommandQueue()
+	{
+		return commandQueue_;
 	}
 
 	void World::loadTextures()
