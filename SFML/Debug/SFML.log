@@ -1,3 +1,2 @@
-﻿  Game.cpp
-d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\game.cpp(26): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+﻿  PlayerControl.cpp
   SFML.vcxproj -> D:\OneDrive\School\NBCC\Fall 2018\Game Development in C++\Class Work\SFML\Debug\SFML.exe

@@ -17,7 +17,9 @@ namespace GEX {
 		MoveLeft,
 		MoveRight,
 		MoveUp,
-		MoveDown
+		MoveDown,
+		RR,
+		RL
 	};
 	class PlayerControl
 	{
