@@ -30,3 +30,4 @@
 *.exe
 *.out
 *.app
+.vs/SFML/v15/Browse.VC.opendb
