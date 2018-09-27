@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 
 namespace GEX {
-	enum TextureID { Landscape, Airplane, Missle, Eagle, Raptor };
+	enum TextureID { Landscape, Airplane, Missle, Eagle, Raptor, TitleScreen };
 
 	class TextureManager
 	{

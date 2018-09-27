@@ -1,2 +1,32 @@
-﻿  PlayerControl.cpp
-  SFML.vcxproj -> D:\OneDrive\School\NBCC\Fall 2018\Game Development in C++\Class Work\SFML\Debug\SFML.exe
+﻿  Aircraft.cpp
+  Application.cpp
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.h(39): error C2086: 'sf::Font Application::font_': redefinition
+  d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.h(32): note: see declaration of 'Application::font_'
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(26): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(108): error C2065: 'TitleState': undeclared identifier
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(108): error C2672: 'GEX::StateStack::registerState': no matching overloaded function found
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(108): error C2974: 'GEX::StateStack::registerState': invalid template argument for 'T', type expected
+  d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\statestack.h(29): note: see declaration of 'GEX::StateStack::registerState'
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(109): error C2065: 'MenuState': undeclared identifier
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(109): error C2672: 'GEX::StateStack::registerState': no matching overloaded function found
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(109): error C2974: 'GEX::StateStack::registerState': invalid template argument for 'T', type expected
+  d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\statestack.h(29): note: see declaration of 'GEX::StateStack::registerState'
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(110): error C2065: 'GameState': undeclared identifier
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(110): error C2672: 'GEX::StateStack::registerState': no matching overloaded function found
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(110): error C2974: 'GEX::StateStack::registerState': invalid template argument for 'T', type expected
+  d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\statestack.h(29): note: see declaration of 'GEX::StateStack::registerState'
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(111): error C2065: 'PauseState': undeclared identifier
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(111): error C2672: 'GEX::StateStack::registerState': no matching overloaded function found
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\application.cpp(111): error C2974: 'GEX::StateStack::registerState': invalid template argument for 'T', type expected
+  d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\statestack.h(29): note: see declaration of 'GEX::StateStack::registerState'
+  Game.cpp
+d:\onedrive\school\nbcc\fall 2018\game development in c++\class work\sfml\sfml\game.cpp(26): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  GameState.cpp
+  PlayerControl.cpp
+  Source.cpp
+  State.cpp
+  StateStack.cpp
+  TextureManager.cpp
+  Utility.cpp
+  World.cpp
+  Generating Code...
