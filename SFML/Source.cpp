@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
-#include "Game.h"
+#include "Application.h"
 
 int main()
 {
-	GEX::Game game;
+	Application app;
 
-	game.run();
+	app.run();
 
 	return 0;
 }

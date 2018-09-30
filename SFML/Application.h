@@ -29,7 +29,6 @@ private:
 
 	sf::RenderWindow			window_;
 	GEX::PlayerControl			player_;
-	sf::Font					font_;
 	GEX::TextureManager			textures_;
 	GEX::StateStack				stateStack_;
 

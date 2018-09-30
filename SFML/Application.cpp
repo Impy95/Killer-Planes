@@ -1,4 +1,9 @@
 #include "Application.h"
+#include "StateIdentifier.h"
+#include "GameState.h"
+#include "TitleState.h"
+#include "MenuState.h"
+#include "PauseState.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.f); // seconds per frame for 60 fps
 
