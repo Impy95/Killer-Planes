@@ -91,6 +91,7 @@ namespace GEX {
 		textures_.load(GEX::TextureID::Landscape, "Media/Textures/Desert.png");
 		textures_.load(GEX::TextureID::Eagle, "Media/Textures/Eagle.png");
 		textures_.load(GEX::TextureID::Raptor, "Media/Textures/Raptor.png");
+		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
 	}
 
 	void World::buildScene()
@@ -120,13 +121,32 @@ namespace GEX {
 		sceneLayer_[Air]->attachChild(std::move(leader));
 
 		// add escort planes
-		std::unique_ptr<Aircraft> leftEscort(new Aircraft(AircraftType::Raptor, textures_));
+		std::unique_ptr<Aircraft> leftEscort(new Aircraft(AircraftType::Avenger, textures_));
 		leftEscort->setPosition(-80.f, 50.f);
 		playerAircraft_->attachChild(std::move(leftEscort));
 
 		std::unique_ptr<Aircraft> rightEscort(new Aircraft(AircraftType::Raptor, textures_));
 		rightEscort->setPosition(80.f, 50.f);
 		playerAircraft_->attachChild(std::move(rightEscort));
+
+		// add enemy aircraft
+		std::unique_ptr<Aircraft> enemy(new Aircraft(AircraftType::Avenger, textures_));
+		enemy->setPosition(spawnPosition_.x - 100.f, spawnPosition_.y - 600.f);
+		enemy->setVelocity(0.f, -scrollSpeeds_);
+		enemy->setRotation(180);
+		sceneLayer_[Air]->attachChild(std::move(enemy));
+
+		enemy = std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Raptor, textures_));
+		enemy->setPosition(spawnPosition_.x - 100.f, spawnPosition_.y - 600.f);
+		enemy->setVelocity(50.f, -scrollSpeeds_);
+		enemy->setRotation(180);
+		sceneLayer_[Air]->attachChild(std::move(enemy));
+
+		enemy = std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Eagle, textures_));
+		enemy->setPosition(spawnPosition_.x - 100.f, spawnPosition_.y - 600.f);
+		enemy->setVelocity(25.f, -scrollSpeeds_);
+		enemy->setRotation(180);
+		sceneLayer_[Air]->attachChild(std::move(enemy));
 	}
 
 

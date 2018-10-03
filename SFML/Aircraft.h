@@ -7,7 +7,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace GEX {
-	enum class AircraftType { Eagle, Raptor };
+	enum class AircraftType { Eagle, Raptor, Avenger };
 
 	class Aircraft : public Entity
 	{

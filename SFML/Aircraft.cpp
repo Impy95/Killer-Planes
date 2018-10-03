@@ -1,7 +1,13 @@
 #include "Aircraft.h"
 #include "Category.h"
+#include "DataTables.h"
 
 namespace GEX {
+
+	namespace 
+	{
+		const std::map<AircraftType, AircraftData> TABLE = initalizeAircraftData();
+	}
 	TextureID toTextureID(AircraftType type)
 	{
 		switch (type)
@@ -20,8 +26,9 @@ namespace GEX {
 		}
 	}
 	GEX::Aircraft::Aircraft(AircraftType type, const TextureManager & textures)
-		: type_(type),
-		sprite_(textures.get(toTextureID(type)))
+		: Entity(TABLE.at(type).hitpoints),
+		type_(type),
+		sprite_(textures.get(TABLE.at(type).texture))
 	{
 		sf::FloatRect bounds = sprite_.getLocalBounds();
 		sprite_.setOrigin(bounds.width / 2.f, bounds.height / 2.f);

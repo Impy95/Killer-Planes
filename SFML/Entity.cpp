@@ -1,8 +1,13 @@
 #include "Entity.h"
-
+#include <cassert>
 
 
 namespace GEX {
+	Entity::Entity(int points)
+		: hitPoints_(points)
+	{
+
+	}
 
 	void GEX::Entity::setVelocity(sf::Vector2f velocity)
 	{
@@ -29,6 +34,33 @@ namespace GEX {
 	{
 		velocity_.x += vx;
 		velocity_.y += vy;
+	}
+
+	int Entity::getHitPoints() const
+	{
+		return hitPoints_;
+	}
+
+	void Entity::damage(int points)
+	{
+		assert(points > 0);
+		hitPoints_ -= points;
+	}
+
+	void Entity::repair(int points)
+	{
+		assert(points > 0);
+		hitPoints_ += points;
+	}
+
+	void Entity::destroy()
+	{
+		hitPoints_ = 0;
+	}
+
+	bool Entity::isDestroyed() const
+	{
+		return (hitPoints_ <= 0);
 	}
 
 	void GEX::Entity::updateCurrent(sf::Time dt)
