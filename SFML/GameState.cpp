@@ -29,5 +29,10 @@ bool GameState::handleEvent(const sf::Event & event)
 		event.key.code == sf::Keyboard::Escape)
 		requestStackPush(GEX::StateID::Pause);
 
+	// Pushing G will enter GEX State
+	if (event.type == sf::Event::KeyPressed &&
+		event.key.code == sf::Keyboard::G)
+		requestStackPush(GEX::StateID::GEX);
+
 	return true;
 }

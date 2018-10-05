@@ -5,6 +5,7 @@
 #include "MenuState.h"
 #include "PauseState.h"
 #include "FontManager.h"
+#include "GEXState.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.f); // seconds per frame for 60 fps
 
@@ -22,6 +23,7 @@ Application::Application()
 	GEX::FontManager::getInstance().load(GEX::FontID::Main, "Media/Sansation.ttf");
 
 	textures_.load(GEX::TextureID::TitleScreen, "Media/Textures/TitleScreenBig.png");
+	textures_.load(GEX::TextureID::Face, "Media/Textures/face.png");
 
 	statisticsText_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 	statisticsText_.setPosition(5.0f, 5.0f);
@@ -111,5 +113,6 @@ void Application::registerStates()
 	stateStack_.registerState<MenuState>(GEX::StateID::Menu);
 	stateStack_.registerState<GameState>(GEX::StateID::Game);
 	stateStack_.registerState<PauseState>(GEX::StateID::Pause);
+	stateStack_.registerState<GexState>(GEX::StateID::GEX);
 }
 

@@ -10,6 +10,7 @@ namespace GEX
 		Menu,
 		Game,
 		Pause,
+		GEX,
 		None
 	};
 }
