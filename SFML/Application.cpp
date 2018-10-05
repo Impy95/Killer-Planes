@@ -4,29 +4,26 @@
 #include "TitleState.h"
 #include "MenuState.h"
 #include "PauseState.h"
+#include "FontManager.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.f); // seconds per frame for 60 fps
 
 Application::Application()
 	: window_(sf::VideoMode(1280, 960), "Killer Planes", sf::Style::Close)
 	, player_()
-	, font_()
 	, textures_()
-	, stateStack_(GEX::State::Context(window_, textures_, font_, player_))
+	, stateStack_(GEX::State::Context(window_, textures_, player_))
 	, statisticsText_()
 	, statisticsUpdateTime_()
 	, statisticsNumFrames_(0)
 {
 	window_.setKeyRepeatEnabled(false);
 
-	if (!font_.loadFromFile("Media/Sansation.ttf"))
-	{
-		// error handling
-	}
+	GEX::FontManager::getInstance().load(GEX::FontID::Main, "Media/Sansation.ttf");
 
 	textures_.load(GEX::TextureID::TitleScreen, "Media/Textures/TitleScreenBig.png");
 
-	statisticsText_.setFont(font_);
+	statisticsText_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 	statisticsText_.setPosition(5.0f, 5.0f);
 	statisticsText_.setCharacterSize(15.0f);
 	statisticsText_.setString("Frames / Second = \n Time / Update =");
