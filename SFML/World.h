@@ -12,6 +12,8 @@
 #include "Aircraft.h"
 #include "CommandQueue.h"
 
+#include <vector>
+
 // forward declaration
 namespace sf
 {
@@ -23,7 +25,7 @@ namespace GEX {
 	public:
 		explicit					World(sf::RenderWindow& window);
 
-		void						update(sf::Time dt);
+		void						update(sf::Time dt, CommandQueue& commands);
 		void						draw();
 
 		CommandQueue&				getCommandQueue();
@@ -33,12 +35,31 @@ namespace GEX {
 		void						adaptPlayerPosition();
 		void						adaptPlayerVelocity();
 
+		void						addEnemies();
+		void						addEnemy(AircraftType type, float relX, float relY);
+		void						spawnEnemies();
+
+		sf::FloatRect				getViewBounds() const;
+		sf::FloatRect				getBattlefieldBounds() const;
+
 	private:
 		enum Layer 
 		{
 			Background = 0,
 			Air,
 			LayerCount
+		};
+
+		struct SpawnPoint
+		{
+			SpawnPoint(AircraftType type, float x, float y) 
+				: type(type)
+				, x(x)
+				, y(y) 
+			{}
+			AircraftType	type;
+			float			x;
+			float			y;
 		};
 	private:
 		sf::RenderWindow&			window_;
@@ -57,6 +78,7 @@ namespace GEX {
 		int							count_;
 		Aircraft*					playerAircraft_;
 
+		std::vector<SpawnPoint>		enemySpawnPoints_;
 	};
 }
 

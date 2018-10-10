@@ -28,9 +28,14 @@
 */
 #include "DataTables.h"
 
-
 namespace GEX
 {
+	std::map<Projectile::Type, ProjectileData> initalizeProjectileData()
+	{
+		std::map<Projectile::Type, ProjectileData> data;
+
+		return data;
+	}
 	std::map<AircraftType, AircraftData> initalizeAircraftData()
 	{
 		std::map<GEX::AircraftType, AircraftData> data;

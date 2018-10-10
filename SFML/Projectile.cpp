@@ -1,6 +1,6 @@
 /**
 * @file
-* GexState.h
+* Projectile.cpp
 * @author
 * Vaughn Rowse 2018
 * @version 1.0
@@ -26,22 +26,47 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#pragma once
-#include "State.h"
+#include "Projectile.h"
+#include "DataTables.h"
+#include "Utility.h"
+#include "Category.h"
 
-class GexState : public GEX::State
+
+namespace GEX
 {
-public:
-	GexState(GEX::StateStack& stack, Context context);
+	namespace
+	{
+		const std::map<Projectile::Type, ProjectileData> TABLE = initalizeProjectileData();
+	}
+	Projectile::Projectile(Type type, const TextureManager & textures)
+		: Entity(1)
+		, type_(type)
+		, sprite_(textures.get(TABLE.at(type).texture))
+	{
+		centerOrigin(sprite_);
+	}
+	unsigned int Projectile::getCategory() const
+	{
+		if (type_ == Type::EnemyBullet)
+			return Category::EnemyProjectile;
+		else
+			return Category::AlliedProjectile;
 
-	void					draw() override;
-	bool					update(sf::Time dt) override;
-	bool					handleEvent(const sf::Event& event) override;
-
-private:
-	sf::Sprite				backgroundSprite_;
-	sf::Sprite				faceSprite_;
-	sf::Text				pauseText_;
-	sf::Text				gexText_;
-	sf::Text				instructionText1_;
-};
+	}
+	float Projectile::getMaxSpeed() const
+	{
+		return TABLE.at(type_).speed;
+	}
+	int Projectile::getDamage() const
+	{
+		return TABLE.at(type_).damage;
+	}
+	void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
+	{
+		Entity::updateCurrent(dt, commands);
+	}
+	void Projectile::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
+	{
+		target.draw(sprite_, states);
+	}
+}

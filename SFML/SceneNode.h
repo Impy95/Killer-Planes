@@ -35,11 +35,10 @@
 #include <vector>
 #include <memory>
 
-
-
 namespace GEX
 {
 	// forward declaration
+	class CommandQueue;
 	struct Command;
 	class SceneNode : public sf::Transformable, public sf::Drawable
 	{
@@ -55,7 +54,7 @@ namespace GEX
 		void					attachChild(Ptr child);
 		Ptr						detachChild(const SceneNode& ptr);
 
-		void					update(sf::Time dt);
+		void					update(sf::Time dt, CommandQueue& commands);
 		void					onCommand(const Command& command, sf::Time dt);
 		virtual unsigned int	getCategory() const;
 
@@ -64,8 +63,8 @@ namespace GEX
 
 	protected:
 		// update the tree
-		virtual void			updateCurrent(sf::Time dt);
-		void					updateChildren(sf::Time dt);
+		virtual void			updateCurrent(sf::Time dt, CommandQueue& commands);
+		void					updateChildren(sf::Time dt, CommandQueue& commands);
 
 		// draw the tree
 		virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const override;

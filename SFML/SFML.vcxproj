@@ -32,6 +32,7 @@
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayerControl.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ResourceIdentifier.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="PlayerControl.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="ResourceIdentifier.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="SpriteNode.h" />

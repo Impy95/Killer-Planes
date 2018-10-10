@@ -28,6 +28,7 @@
 */
 #include "TextNode.h"
 #include "Utility.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "FontManager.h"
 
 GEX::TextNode::TextNode(const std::string & text)
@@ -45,4 +46,5 @@ void GEX::TextNode::setText(const std::string & text)
 
 void GEX::TextNode::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 {
+	target.draw(text_, states);
 }

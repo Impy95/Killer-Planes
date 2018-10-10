@@ -1,8 +1,8 @@
 /**
 * @file
-* Category.h
+* Projectile.h
 * @author
-* Vaughn Rowse
+* Vaughn Rowse 2018
 * @version 1.0
 *
 * @section DESCRIPTION
@@ -27,17 +27,39 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
+#include "Entity.h"
+#include "TextureManager.h"
+#include "CommandQueue.h"
 
-namespace Category 
+namespace GEX
 {
-	enum Type
+	class Projectile : public Entity
 	{
-		None			= 0,
-		Scene			= 1 << 0,
-		PlayerAircraft	= 1 << 1,
-		AlliedAircraft	= 1 << 2,
-		EnemyAircraft	= 1 << 3,
-		EnemyProjectile = 1 << 4,
-		AlliedProjectile = 1 << 5
+	public:
+		enum class Type
+		{
+			AlliedBullet,
+			EnemyBullet,
+			Missle
+		};
+
+	public:
+						Projectile(Type type, const TextureManager & textures);
+
+		unsigned int	getCategory() const override;
+		//sf::FloatRect	getBoundingRect() const override;
+
+		float			getMaxSpeed() const;
+		int				getDamage() const;
+
+	private:
+		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
+		void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	private:
+		Type			type_;
+		sf::Sprite		sprite_;
+		sf::Vector2f	targetDirection_;
 	};
 }
+

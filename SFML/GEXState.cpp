@@ -38,7 +38,6 @@ GexState::GexState(GEX::StateStack& stack, Context context)
 	, pauseText_()
 	, gexText_()
 	, instructionText1_()
-	, instructionText2_()
 {
 	// Get the font from the content
 	sf::Font& font = GEX::FontManager::getInstance().get(GEX::FontID::Main);
@@ -61,15 +60,10 @@ GexState::GexState(GEX::StateStack& stack, Context context)
 	faceSprite_.setColor(sf::Color(255, 255, 255, 100));
 	centerOrigin(faceSprite_);
 
-	// Set Instruction text 1
+	// Set Instruction text 
 	instructionText1_.setFont(font);
-	instructionText1_.setString("(Press G to return to the game)");
+	instructionText1_.setString("(Press G to return to the game)\n(Press backspace to return to the main menu");
 	centerOrigin(instructionText1_);
-
-	// Set Instruction text 2
-	instructionText2_.setFont(font);
-	instructionText2_.setString("(Press backspace to return to the main menu)");
-	centerOrigin(instructionText2_);
 
 	// Position all elements
 	sf::Vector2f viewsize = context.window->getView().getSize();
@@ -77,7 +71,6 @@ GexState::GexState(GEX::StateStack& stack, Context context)
 	gexText_.setPosition(0.5f * viewsize.x, 0.48f * viewsize.y);
 	faceSprite_.setPosition(0.5f * viewsize.x, 0.55f * viewsize.y);
 	instructionText1_.setPosition(0.5f * viewsize.x, 0.78f * viewsize.y);
-	instructionText2_.setPosition(0.5f * viewsize.x, 0.83f * viewsize.y);
 }
 
 void GexState::draw()
@@ -98,7 +91,6 @@ void GexState::draw()
 	window.draw(gexText_);
 	window.draw(faceSprite_);
 	window.draw(instructionText1_);
-	window.draw(instructionText2_);
 }
 
 bool GexState::update(sf::Time dt)

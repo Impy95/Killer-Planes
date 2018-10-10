@@ -50,7 +50,7 @@ namespace GEX {
 		virtual bool	isDestroyed() const;
 
 	protected:
-		virtual void	updateCurrent(sf::Time dt) override;
+		virtual void	updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
 	private:
 		sf::Vector2f	velocity_;

@@ -33,10 +33,10 @@ namespace GEX {
 		return result;
 	}
 
-	void SceneNode::update(sf::Time dt)
+	void SceneNode::update(sf::Time dt, CommandQueue& commands)
 	{
-		updateCurrent(dt);
-		updateChildren(dt);
+		updateCurrent(dt, commands);
+		updateChildren(dt, commands);
 	}
 
 	void SceneNode::onCommand(const Command& command, sf::Time dt)
@@ -70,15 +70,15 @@ namespace GEX {
 		return transform;
 	}
 
-	void SceneNode::updateCurrent(sf::Time dt)
+	void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		// default do nothing
 	}
 
-	void SceneNode::updateChildren(sf::Time dt)
+	void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 	{
 		for (Ptr& child : children_)
-			child->update(dt);
+			child->update(dt, commands);
 	}
 
 	void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
