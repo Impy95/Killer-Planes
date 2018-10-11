@@ -29,6 +29,8 @@
 #pragma once
 #include "Entity.h"
 #include "TextureManager.h"
+#include "Command.h"
+#include "Projectile.h"
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace GEX {
@@ -46,12 +48,23 @@ namespace GEX {
 		unsigned int	getCategory() const override;
 		void			updateTexts(); // update the mini health and missle display
 
+		void			fire();
+		void			launchMissile() {}
+
+		bool			isAllied() const;
+
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
 	private:
 		void			updateMovementPattern(sf::Time dt);
 		float			getMaxSpeed() const;
+
+		void			createBullets(SceneNode& node, const TextureManager& textures);
+		void			createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, 
+										 const TextureManager& textures);
+
+		void			checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
 
 	private:
 		sf::Sprite		sprite_;
@@ -61,6 +74,15 @@ namespace GEX {
 
 		float			travelDistance_;
 		std::size_t		directionIndex_;
+
+		bool			isFiring_;
+
+		int				fireRateLevel_;
+		int				fireSpreadLevel_;
+
+		sf::Time		fireCountdown_;
+
+		Command			fireCommand_;
 	};
 }
 

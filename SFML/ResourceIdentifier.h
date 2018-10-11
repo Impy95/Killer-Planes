@@ -39,7 +39,8 @@ namespace GEX
 		Raptor,
 		TitleScreen,
 		Face,
-		Avenger
+		Avenger,
+		Bullet
 	};
 	enum class FontID
 	{

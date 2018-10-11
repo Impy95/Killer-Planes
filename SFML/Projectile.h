@@ -40,7 +40,7 @@ namespace GEX
 		{
 			AlliedBullet,
 			EnemyBullet,
-			Missle
+			Missile
 		};
 
 	public:

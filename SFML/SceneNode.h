@@ -34,6 +34,7 @@
 
 #include <vector>
 #include <memory>
+#include "Category.h"
 
 namespace GEX
 {
@@ -45,8 +46,8 @@ namespace GEX
 	public:
 		typedef std::unique_ptr<SceneNode> Ptr;
 	public:
-								SceneNode();
-		virtual					~SceneNode();
+								SceneNode(Category::Type category = Category::Type::None);
+		virtual					~SceneNode() = default;
 
 								SceneNode(const SceneNode&) = delete;
 		SceneNode&				operator=(SceneNode&) = delete;
@@ -73,6 +74,8 @@ namespace GEX
 	private:
 		SceneNode*				parent_;
 		std::vector<Ptr>		children_;
+
+		Category::Type			category_;
 	};
 }
 

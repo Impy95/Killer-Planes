@@ -49,6 +49,8 @@ namespace GEX
 		int						hitpoints;
 		float					speed;
 		TextureID				texture;
+		sf::Time				fireInterval;
+
 		std::vector<Direction>	directions;
 	};
 

@@ -18,6 +18,8 @@ namespace GEX {
 		MoveRight,
 		MoveUp,
 		MoveDown,
+		Fire,
+		LaunchMissile,
 		RR,
 		RL
 	};

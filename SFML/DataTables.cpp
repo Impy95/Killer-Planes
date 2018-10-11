@@ -34,6 +34,18 @@ namespace GEX
 	{
 		std::map<Projectile::Type, ProjectileData> data;
 
+		data[Projectile::Type::AlliedBullet].damage = 10;
+		data[Projectile::Type::AlliedBullet].speed = 300.f;
+		data[Projectile::Type::AlliedBullet].texture = TextureID::Bullet;
+
+		data[Projectile::Type::EnemyBullet].damage = 10;
+		data[Projectile::Type::EnemyBullet].speed = 300.f;
+		data[Projectile::Type::EnemyBullet].texture = TextureID::Bullet;
+
+		data[Projectile::Type::Missile].damage = 200;
+		data[Projectile::Type::Missile].speed = 150.f;
+		data[Projectile::Type::Missile].texture = TextureID::Missile;
+
 		return data;
 	}
 	std::map<AircraftType, AircraftData> initalizeAircraftData()
@@ -44,11 +56,13 @@ namespace GEX
 		data[AircraftType::Eagle].hitpoints = 100;
 		data[AircraftType::Eagle].speed = 200.f;
 		data[AircraftType::Eagle].texture = TextureID::Eagle;
+		data[AircraftType::Eagle].fireInterval = sf::seconds(1);
 
 		// Raptor
 		data[AircraftType::Raptor].hitpoints = 20;
 		data[AircraftType::Raptor].speed = 80.f;
 		data[AircraftType::Raptor].texture = TextureID::Raptor;
+		data[AircraftType::Raptor].fireInterval = sf::Time::Zero;
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f)); //Emplace back avooid create a temp object - saves resources
 		data[AircraftType::Raptor].directions.emplace_back(Direction(-45.f, 160.f));
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f));
@@ -57,6 +71,7 @@ namespace GEX
 		data[AircraftType::Avenger].hitpoints = 40;
 		data[AircraftType::Avenger].speed = 50.f;
 		data[AircraftType::Avenger].texture = TextureID::Avenger;
+		data[AircraftType::Avenger].fireInterval = sf::seconds(2);
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f)); //Emplace back avooid create a temp object - saves resources
 		data[AircraftType::Avenger].directions.emplace_back(Direction(0.f, 50.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(-45.f, 100.f));

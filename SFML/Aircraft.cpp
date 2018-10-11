@@ -30,6 +30,7 @@
 #include "Category.h"
 #include "DataTables.h"
 #include "TextNode.h"
+#include "CommandQueue.h"
 #include <memory>
 #include <string>
 #include "Utility.h"
@@ -41,13 +42,29 @@ namespace GEX {
 		const std::map<AircraftType, AircraftData> TABLE = initalizeAircraftData();
 	}
 
-	GEX::Aircraft::Aircraft(AircraftType type, const TextureManager & textures)
+	Aircraft::Aircraft(AircraftType type, const TextureManager & textures)
 		: Entity(TABLE.at(type).hitpoints),
-		type_(type),
-		sprite_(textures.get(TABLE.at(type).texture))
+		type_(type)
+		, sprite_(textures.get(TABLE.at(type).texture))
+		, healthDisplay_(nullptr)
+		, missileDisplay_(nullptr)
+		, travelDistance_(0.f)
+		, directionIndex_(0.f)
+		, isFiring_(false)
+		, fireRateLevel_(1)
+		, fireSpreadLevel_(1)
+		, fireCountdown_(sf::Time::Zero)
+		, fireCommand_()
 	{
-		sf::FloatRect bounds = sprite_.getLocalBounds();
-		sprite_.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+		//
+		// Set up Commands
+		//
+		fireCommand_.category = Category::AirSceneLayer;
+		fireCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
+		{
+			createBullets(node, textures);
+		};
+		centerOrigin(sprite_);
 
 		// Creating health display and attaching to graph
 		std::unique_ptr<TextNode> health(new TextNode(std::string("")));
@@ -78,7 +95,7 @@ namespace GEX {
 		}
 	}
 
-	void GEX::Aircraft::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
+	void Aircraft::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 	{
 		target.draw(sprite_, states);
 	}
@@ -103,11 +120,23 @@ namespace GEX {
 		healthDisplay_->setRotation(-getRotation());
 	}
 
+	void Aircraft::fire()
+	{
+		if (TABLE.at(type_).fireInterval != sf::Time::Zero)
+			isFiring_ = true;
+	}
+
+	bool Aircraft::isAllied() const
+	{
+		return (type_ == AircraftType::Eagle);
+	}
+
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		updateMovementPattern(dt);
 		updateTexts();
 		Entity::updateCurrent(dt, commands);
+		checkProjectileLaunch(dt, commands);
 	}
 
 	void Aircraft::updateMovementPattern(sf::Time dt)
@@ -131,5 +160,66 @@ namespace GEX {
 	float Aircraft::getMaxSpeed() const
 	{
 		return TABLE.at(type_).speed;
+	}
+	void Aircraft::createBullets(SceneNode & node, const TextureManager & textures)
+	{
+		Projectile::Type type = isAllied() ? Projectile::Type::AlliedBullet : Projectile::Type::EnemyBullet;
+
+		switch (fireSpreadLevel_)
+		{
+		case 1:
+			createProjectile(node, type, 0.f, 0.5f, textures);
+			break;
+		case 2:
+			createProjectile(node, type, -0.33f, 0.5f, textures);
+			createProjectile(node, type, +0.33f, 0.5f, textures);
+			break;
+		case 3:
+			createProjectile(node, type, -0.5f, 0.5f, textures);
+			createProjectile(node, type, 0.f, 0.5f, textures);
+			createProjectile(node, type, +0.5f, 0.5f, textures);
+			break;
+		}
+	}
+
+	void Aircraft::createProjectile(SceneNode & node, Projectile::Type type, float xOffset, float yOffset, 
+									const TextureManager & textures)
+	{
+		// add player aircraft & game objects
+		std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+		sf::Vector2f offset(xOffset * sprite_.getGlobalBounds().width, yOffset * sprite_.getGlobalBounds().height);
+		sf::Vector2f velocity(0, projectile->getMaxSpeed());
+		float sign = isAllied() ? -1.f : 1.f;
+
+		projectile->setPosition(getWorldPosition() + offset * sign);
+		projectile->setVelocity(velocity * sign);
+		node.attachChild(std::move(projectile));
+	}
+
+	void Aircraft::checkProjectileLaunch(sf::Time dt, CommandQueue & commands)
+	{
+		// Enemies alays fire
+		if (!isAllied())
+		{
+			fire();
+		}
+
+		if (isFiring_ && fireCountdown_ <= sf::Time::Zero)
+		{
+			commands.push(fireCommand_);
+			isFiring_ = false;
+			fireCountdown_ = TABLE.at(type_).fireInterval / (fireRateLevel_ + 1.f);
+		}
+		else if (fireCountdown_ > sf::Time::Zero)
+		{
+			fireCountdown_ -= dt;
+		}
+
+		// missile 
+		//if (isLaunchingMissile_)
+		//{
+		//	commands.push(launchMissileCommand_);
+		//	isLaunchingMissile_ = false;
+		//}
 	}
 }

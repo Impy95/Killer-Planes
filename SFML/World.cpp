@@ -28,6 +28,7 @@
 */
 #include "World.h"
 #include "Aircraft.h"
+#include "Category.h"
 
 namespace GEX {
 	World::World(sf::RenderWindow& window) : window_(window),
@@ -181,6 +182,8 @@ namespace GEX {
 		textures_.load(GEX::TextureID::Eagle, "Media/Textures/Eagle.png");
 		textures_.load(GEX::TextureID::Raptor, "Media/Textures/Raptor.png");
 		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
+		textures_.load(GEX::TextureID::Bullet, "Media/Textures/Bullet.png");
+		textures_.load(GEX::TextureID::Missile, "Media/Textures/Missile.png");
 	}
 
 	void World::buildScene()
@@ -188,7 +191,8 @@ namespace GEX {
 		// Initalize layers
 		for (int i = 0; i < LayerCount; i++)
 		{
-			SceneNode::Ptr layer(new SceneNode());
+			auto category = (i == Air) ? Category::Type::AirSceneLayer : Category::Type::None;
+			SceneNode::Ptr layer(new SceneNode(category));
 			sceneLayer_.push_back(layer.get());
 			sceneGraph_.attachChild(std::move(layer));
 		}

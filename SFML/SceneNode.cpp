@@ -5,14 +5,10 @@
 #include <cassert>
 
 namespace GEX {
-	SceneNode::SceneNode()
-		: children_(),
-		parent_(nullptr)
-	{
-	}
-
-
-	SceneNode::~SceneNode()
+	SceneNode::SceneNode(Category::Type category)
+		: children_()
+		, parent_(nullptr)
+		, category_(category)
 	{
 	}
 
@@ -52,7 +48,7 @@ namespace GEX {
 
 	unsigned int SceneNode::getCategory() const
 	{
-		return Category::Type::None;
+		return category_;
 	}
 
 	sf::Vector2f SceneNode::getWorldPosition() const
