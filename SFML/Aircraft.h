@@ -49,7 +49,7 @@ namespace GEX {
 		void			updateTexts(); // update the mini health and missle display
 
 		void			fire();
-		void			launchMissile() {}
+		void			launchMissile() { isLaunchingMissile_ = true; }
 
 		bool			isAllied() const;
 
@@ -76,13 +76,17 @@ namespace GEX {
 		std::size_t		directionIndex_;
 
 		bool			isFiring_;
+		bool			isLaunchingMissile_;
 
 		int				fireRateLevel_;
 		int				fireSpreadLevel_;
+		int				missileAmmo_;
 
 		sf::Time		fireCountdown_;
 
 		Command			fireCommand_;
+		Command			launchMissileCommand_;
+		Command			dropPickupCommand_;
 	};
 }
 

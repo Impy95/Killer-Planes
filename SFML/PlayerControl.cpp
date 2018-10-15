@@ -52,7 +52,8 @@ namespace GEX {
 			auto found = keyBindings_.find(event.key.code);
 			if (found != keyBindings_.end())
 			{
-				commands.push(actionBindings_[found->second]);
+				if (!isRealTimeAction(found->second))
+					commands.push(actionBindings_[found->second]);
 			}
 		}
 	}
@@ -97,7 +98,6 @@ namespace GEX {
 		case Action::RR:
 		case Action::RL:
 		case Action::Fire:
-		case Action::LaunchMissile:
 			return true;
 			break;
 		default:

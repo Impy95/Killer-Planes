@@ -51,10 +51,14 @@ namespace GEX {
 		, travelDistance_(0.f)
 		, directionIndex_(0.f)
 		, isFiring_(false)
+		, isLaunchingMissile_(false)
 		, fireRateLevel_(1)
 		, fireSpreadLevel_(1)
+		, missileAmmo_(5)
 		, fireCountdown_(sf::Time::Zero)
 		, fireCommand_()
+		, launchMissileCommand_()
+		, dropPickupCommand_()
 	{
 		//
 		// Set up Commands
@@ -63,6 +67,18 @@ namespace GEX {
 		fireCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
 		{
 			createBullets(node, textures);
+		};
+
+		launchMissileCommand_.category = Category::AirSceneLayer;
+		launchMissileCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
+		{
+			createProjectile(node, Projectile::Type::Missile, 0.f, 0.5f, textures);
+		};
+
+		dropPickupCommand_.category = Category::AirSceneLayer;
+		dropPickupCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
+		{
+			// create drop pick up command
 		};
 		centerOrigin(sprite_);
 
@@ -124,6 +140,8 @@ namespace GEX {
 	{
 		if (TABLE.at(type_).fireInterval != sf::Time::Zero)
 			isFiring_ = true;
+			//isLaunchingMissile_ = true;
+			
 	}
 
 	bool Aircraft::isAllied() const
@@ -208,11 +226,24 @@ namespace GEX {
 		{
 			commands.push(fireCommand_);
 			isFiring_ = false;
-			fireCountdown_ = TABLE.at(type_).fireInterval / (fireRateLevel_ + 1.f);
+			fireCountdown_ += TABLE.at(type_).fireInterval / (fireRateLevel_ + 1.f);
 		}
 		else if (fireCountdown_ > sf::Time::Zero)
 		{
+			// Interval not expired: Decrease it further
 			fireCountdown_ -= dt;
+		}
+
+
+		// check for missile launch
+		if (isLaunchingMissile_)
+		{
+			if (missileAmmo_ > 0)
+			{
+				commands.push(launchMissileCommand_);
+				isLaunchingMissile_ = false;
+				--missileAmmo_;
+			}
 		}
 
 		// missile 
