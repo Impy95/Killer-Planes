@@ -149,6 +149,28 @@ namespace GEX {
 		return (type_ == AircraftType::Eagle);
 	}
 
+	void Aircraft::increasedFireRate()
+	{
+		if (fireRateLevel_ < 10)
+			fireRateLevel_++;
+	}
+
+	void Aircraft::increasedFireSpread()
+	{
+		if (fireSpreadLevel_ < 3)
+			fireSpreadLevel_++;
+	}
+
+	sf::FloatRect Aircraft::getBoundingBox() const
+	{
+		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
+	}
+
+	void Aircraft::collectMissile(unsigned int count)
+	{
+		missileAmmo_ += count;
+	}
+
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		updateMovementPattern(dt);

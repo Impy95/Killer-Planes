@@ -30,6 +30,7 @@
     <ClCompile Include="GEXState.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="PlayerControl.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ResourceIdentifier.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="GEXState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="PauseState.h" />
+    <ClInclude Include="Pickup.h" />
     <ClInclude Include="PlayerControl.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ResourceIdentifier.h" />

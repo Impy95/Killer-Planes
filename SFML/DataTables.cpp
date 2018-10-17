@@ -30,6 +30,26 @@
 
 namespace GEX
 {
+
+	std::map<Pickup::Type, PickupData> initalizePickupData()
+	{
+		std::map<Pickup::Type, PickupData> data;
+
+		data[Pickup::Type::HealthRefill].texture = TextureID::HealthRefill;
+		data[Pickup::Type::HealthRefill].action = [](Aircraft& a) {a.repair(25); };
+
+		data[Pickup::Type::MissileRefill].texture = TextureID::MissileRefill;
+		data[Pickup::Type::MissileRefill].action = [](Aircraft& a) {a.collectMissile(3); };
+
+		data[Pickup::Type::FireSpread].texture = TextureID::FireSpread;
+		data[Pickup::Type::FireSpread].action = [](Aircraft& a) {a.increasedFireRate(); };
+
+		data[Pickup::Type::FireRate].texture = TextureID::FireRate;
+		data[Pickup::Type::FireRate].action = [](Aircraft& a) {a.increasedFireRate(); };
+
+		return data;
+	}
+
 	std::map<Projectile::Type, ProjectileData> initalizeProjectileData()
 	{
 		std::map<Projectile::Type, ProjectileData> data;
