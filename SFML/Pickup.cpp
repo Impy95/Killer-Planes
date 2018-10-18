@@ -1,5 +1,6 @@
 #include "Pickup.h"
 #include "DataTables.h"
+#include "Utility.h"
 
 namespace GEX
 {
@@ -13,16 +14,22 @@ namespace GEX
 		, type_(type)
 		, sprite_(textures.get(TABLE.at(type).texture))
 	{
+		centerOrigin(sprite_);
 	}
 
 	unsigned Pickup::getCategory() const
 	{
-		return Category::AlliedAircraft;
+		return Category::Pickup;
 	}
 
 	sf::FloatRect Pickup::getBoundingBox() const
 	{
 		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
+	}
+
+	void Pickup::apply(Aircraft& player)
+	{
+		TABLE.at(type_).action(player);
 	}
 
 	void Pickup::updateCurrent(sf::Time dt, CommandQueue& commands)

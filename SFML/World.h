@@ -43,6 +43,8 @@ namespace GEX {
 		sf::FloatRect				getBattlefieldBounds() const;
 
 		void						guideMissile();
+		void						handleCollisions();
+		bool						matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 
 	private:
 		enum Layer 

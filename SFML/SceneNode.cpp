@@ -88,6 +88,27 @@ namespace GEX {
 		target.draw(box);
 	}
 
+	void SceneNode::checkSceneCollision(SceneNode& rootNode, std::set<Pair>& collisionPair)
+	{
+		checkNodeCollision(rootNode, collisionPair);
+		for (Ptr& c : rootNode.children_)
+			checkSceneCollision(*c, collisionPair);
+	}
+
+	void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPair)
+	{
+		if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
+			collisionPair.insert(std::minmax(this, &node));
+
+		for (Ptr& c : children_)
+			c->checkNodeCollision(node, collisionPair);
+	}
+
+	bool SceneNode::isDestroyed() const
+	{
+		return false;
+	}
+
 	void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		// default do nothing
@@ -126,6 +147,11 @@ namespace GEX {
 	float distance(const SceneNode& lhs, const SceneNode& rhs)
 	{
 		return length(lhs.getWorldPosition() - rhs.getWorldPosition());
+	}
+
+	bool collision(const SceneNode & lhs, const SceneNode & rhs)
+	{
+		return lhs.getBoundingBox().intersects(rhs.getBoundingBox());
 	}
 
 }

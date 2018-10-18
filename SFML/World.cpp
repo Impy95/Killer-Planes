@@ -29,6 +29,7 @@
 #include "World.h"
 #include "Aircraft.h"
 #include "Category.h"
+#include "Pickup.h"
 
 namespace GEX {
 	World::World(sf::RenderWindow& window) : window_(window),
@@ -61,6 +62,8 @@ namespace GEX {
 		// run all the commands in the command queue
 		while (!commandQueue_.isEmpty())
 			sceneGraph_.onCommand(commandQueue_.pop(), dt);
+
+		handleCollisions();
 
 		adaptPlayerVelocity();
 		sceneGraph_.update(dt, commands);
@@ -218,6 +221,60 @@ namespace GEX {
 		return commandQueue_;
 	}
 
+	void World::handleCollisions()
+	{
+		// build a list of colliding pairs of SceneNodes
+		std::set<SceneNode::Pair> collisionPairs;
+		sceneGraph_.checkSceneCollision(sceneGraph_, collisionPairs);
+
+		for (SceneNode::Pair pair : collisionPairs)
+		{
+			if (matchesCategories(pair, Category::Type::PlayerAircraft, Category::Type::EnemyAircraft))
+			{
+				auto& player = static_cast<Aircraft&>(*(pair.first));
+				auto& enemy = static_cast<Aircraft&>(*(pair.second));
+
+				player.damage(enemy.getHitPoints());
+				enemy.destroy();
+			}
+			else if (matchesCategories(pair, Category::Type::PlayerAircraft, Category::Type::Pickup))
+			{
+				auto& player = static_cast<Aircraft&>(*(pair.first));
+				auto& pickup = static_cast<Pickup&>(*(pair.second));
+
+				pickup.apply(player);
+				pickup.destroy();
+			}
+			else if (matchesCategories(pair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile)
+			|| (matchesCategories(pair, Category::Type::EnemyAircraft, Category::Type::AlliedProjectile)))
+			{
+				auto& aircraft = static_cast<Aircraft&>(*(pair.first));
+				auto& projectile = static_cast<Projectile&>(*(pair.second));
+
+				aircraft.damage(projectile.getDamage());
+				projectile.destroy();
+			}
+		}
+	}
+
+	bool World::matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+	{
+		const unsigned int category1 = colliders.first->getCategory();
+		const unsigned int category2 = colliders.second->getCategory();
+
+		if (type1 & category1 && type2 & category2)
+		{
+			return true;
+		}
+		else if (type1 & category2 && type2 & category1)
+		{
+			std::swap(colliders.first, colliders.second);
+			return true;
+		}
+		else
+			return false;
+	}
+
 	void World::loadTextures()
 	{
 		textures_.load(GEX::TextureID::Airplane, "Media/Textures/Eagles.png");
@@ -227,6 +284,10 @@ namespace GEX {
 		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
 		textures_.load(GEX::TextureID::Bullet, "Media/Textures/Bullet.png");
 		textures_.load(GEX::TextureID::Missile, "Media/Textures/Missile.png");
+		textures_.load(GEX::TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
+		textures_.load(GEX::TextureID::FireRate, "Media/Textures/FireRate.png");
+		textures_.load(GEX::TextureID::FireSpread, "Media/Textures/FireSpread.png");
+		textures_.load(GEX::TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
 	}
 
 	void World::buildScene()

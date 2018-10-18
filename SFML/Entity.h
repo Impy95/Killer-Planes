@@ -47,7 +47,7 @@ namespace GEX {
 		void			damage(int points);
 		void			repair(int points);
 		void			destroy();
-		virtual bool	isDestroyed() const;
+		virtual bool	isDestroyed() const override;
 
 	protected:
 		virtual void	updateCurrent(sf::Time dt, CommandQueue& commands) override;

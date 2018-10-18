@@ -34,6 +34,7 @@
 
 #include <vector>
 #include <memory>
+#include <set>
 #include "Category.h"
 
 namespace GEX
@@ -44,7 +45,8 @@ namespace GEX
 	class SceneNode : public sf::Transformable, public sf::Drawable
 	{
 	public:
-		typedef std::unique_ptr<SceneNode> Ptr;
+		using Ptr = std::unique_ptr<SceneNode>;
+		using Pair = std::pair<SceneNode*, SceneNode*>;
 	public:
 								SceneNode(Category::Type category = Category::Type::None);
 		virtual					~SceneNode() = default;
@@ -65,6 +67,11 @@ namespace GEX
 		virtual sf::FloatRect	getBoundingBox() const;
 		void					drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const;
 
+		void					checkSceneCollision(SceneNode& rootNode, std::set<Pair>& collisionPair);
+		void					checkNodeCollision(SceneNode& rootNode, std::set<Pair>& collisionPair);
+
+		virtual bool			isDestroyed() const;
+
 	protected:
 		// update the tree
 		virtual void			updateCurrent(sf::Time dt, CommandQueue& commands);
@@ -81,6 +88,7 @@ namespace GEX
 		Category::Type			category_;
 	};
 
-	float distance(const SceneNode& lhs, const SceneNode& rhs);
+	float	distance(const SceneNode& lhs, const SceneNode& rhs);
+	bool	collision(const SceneNode& lhs, const SceneNode& rhs);
 }
 

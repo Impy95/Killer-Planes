@@ -29,6 +29,7 @@
 #pragma once
 #include "Entity.h"
 #include "TextureManager.h"
+#include "Aircraft.h"
 
 namespace GEX
 {
@@ -48,6 +49,7 @@ namespace GEX
 
 		unsigned int	getCategory() const override;
 		sf::FloatRect	getBoundingBox() const override;
+		void			apply(Aircraft& player);
 
 	private:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;

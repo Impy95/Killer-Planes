@@ -51,8 +51,9 @@ namespace GEX
 	{
 		if (type_ == Type::EnemyBullet)
 			return Category::EnemyProjectile;
-		else
+		if (type_ == Type::AlliedBullet || type_ == Type::Missile)
 			return Category::AlliedProjectile;
+		return Category::EnemyProjectile;
 
 	}
 
