@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* GameOverState.h
 * @author
 * Vaughn Rowse 2018
 * @version 1.0
@@ -28,34 +28,20 @@
 */
 
 #pragma once
-#include "SceneNode.h"
 
-namespace GEX {
-	class Entity : public SceneNode
-	{
-	public:
-		explicit		Entity(int points);
+#include "State.h"
+class GameOverState : public GEX::State
+{
+public:
+	GameOverState(GEX::StateStack& stack, Context context);
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
+	void			draw() override;
+	bool			update(sf::Time dt) override;
+	bool			handleEvent(const sf::Event& event) override;
 
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
+private:
 
-		int				getHitPoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy();
-		bool			isDestroyed() const override;
-		void			remove();
-
-	protected:
-		virtual void	updateCurrent(sf::Time dt, CommandQueue& commands) override;
-
-	private:
-		sf::Vector2f	velocity_;
-		int				hitPoints_;
-	};
-}
+	sf::Text		gameOverText_;
+	sf::Time		elapsedTime_;
+};
 

@@ -20,6 +20,7 @@ namespace GEX {
 		sf::Vector2f velocity;
 	};
 	PlayerControl::PlayerControl()
+		: currentMissionStatus_(MissionStatus::MissionRunning)
 	{
 		// set up bindings
 		keyBindings_[sf::Keyboard::A] = Action::MoveLeft;
@@ -66,6 +67,16 @@ namespace GEX {
 			if (sf::Keyboard::isKeyPressed(pair.first) && isRealTimeAction(pair.second))
 				commands.push(actionBindings_[pair.second]);
 		}
+	}
+
+	void PlayerControl::setMissionStatus(MissionStatus status)
+	{
+		currentMissionStatus_ = status;
+	}
+
+	MissionStatus PlayerControl::getMissionStatus() const
+	{
+		return currentMissionStatus_;
 	}
 
 	void PlayerControl::initalizeActions()

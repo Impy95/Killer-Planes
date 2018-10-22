@@ -52,6 +52,7 @@ namespace GEX {
 		, directionIndex_(0.f)
 		, isFiring_(false)
 		, isLaunchingMissile_(false)
+		, isMarkedForRemoval_(false)
 		, fireRateLevel_(1)
 		, fireSpreadLevel_(1)
 		, missileAmmo_(5)
@@ -78,7 +79,7 @@ namespace GEX {
 		dropPickupCommand_.category = Category::AirSceneLayer;
 		dropPickupCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
 		{
-			// create drop pick up command
+			createPickup(node, textures);
 		};
 		centerOrigin(sprite_);
 
@@ -88,7 +89,7 @@ namespace GEX {
 		attachChild(std::move(health));
 
 		//Creating missile display and attaching to the graph
-		std::unique_ptr<TextNode> missile(new TextNode(""));
+		std::unique_ptr<TextNode> missile(new TextNode(std::string("")));
 		missileDisplay_ = missile.get();
 		attachChild(std::move(missile));
 	}
@@ -134,6 +135,13 @@ namespace GEX {
 		healthDisplay_->setText(std::to_string(getHitPoints()) + "HP");
 		healthDisplay_->setPosition(0.f, 50.f);
 		healthDisplay_->setRotation(-getRotation());
+
+		if (isAllied())
+		{
+			missileDisplay_->setText("Missiles: " + std::to_string(missileAmmo_));
+			missileDisplay_->setPosition(0.f, 70.f);
+		}
+
 	}
 
 	void Aircraft::fire()
@@ -166,6 +174,11 @@ namespace GEX {
 		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
 	}
 
+	bool Aircraft::isMarkedForRemoval() const
+	{
+		return isMarkedForRemoval_;
+	}
+
 	void Aircraft::collectMissile(unsigned int count)
 	{
 		missileAmmo_ += count;
@@ -173,10 +186,18 @@ namespace GEX {
 
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
+		checkProjectileLaunch(dt, commands);
+		if (isDestroyed() && !isAllied())
+		{
+			checkPickupDrop(commands);
+
+			isMarkedForRemoval_ = true;
+			return;
+		}
 		updateMovementPattern(dt);
 		updateTexts();
 		Entity::updateCurrent(dt, commands);
-		checkProjectileLaunch(dt, commands);
+
 	}
 
 	void Aircraft::updateMovementPattern(sf::Time dt)
@@ -201,7 +222,18 @@ namespace GEX {
 	{
 		return TABLE.at(type_).speed;
 	}
-	void Aircraft::createBullets(SceneNode & node, const TextureManager & textures)
+
+	void Aircraft::createPickup(SceneNode& node, const TextureManager& textures) const
+	{
+		auto type = static_cast<Pickup::Type>(0);//(randomInt(static_cast<int>(Pickup::Type::Count)));
+
+		std::unique_ptr<Pickup> pickup(new Pickup(type, textures));
+		pickup->setPosition(getWorldPosition());
+		pickup->setVelocity(0.f, 0.f);
+		node.attachChild(std::move(pickup));
+	}
+
+	void Aircraft::createBullets(SceneNode & node, const TextureManager & textures) const
 	{
 		Projectile::Type type = isAllied() ? Projectile::Type::AlliedBullet : Projectile::Type::EnemyBullet;
 
@@ -223,7 +255,7 @@ namespace GEX {
 	}
 
 	void Aircraft::createProjectile(SceneNode & node, Projectile::Type type, float xOffset, float yOffset, 
-									const TextureManager & textures)
+									const TextureManager & textures) const
 	{
 		// add player aircraft & game objects
 		std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
@@ -234,6 +266,12 @@ namespace GEX {
 		projectile->setPosition(getWorldPosition() + offset * sign);
 		projectile->setVelocity(velocity * sign);
 		node.attachChild(std::move(projectile));
+	}
+
+	void Aircraft::checkPickupDrop(CommandQueue& commands)
+	{
+		if (!isAllied())// && randomInt(3) == 0)
+			commands.push(dropPickupCommand_);
 	}
 
 	void Aircraft::checkProjectileLaunch(sf::Time dt, CommandQueue & commands)

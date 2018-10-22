@@ -71,6 +71,9 @@ namespace GEX
 		void					checkNodeCollision(SceneNode& rootNode, std::set<Pair>& collisionPair);
 
 		virtual bool			isDestroyed() const;
+		virtual bool			isMarkedForRemoval() const;
+
+		void					removeWrecks();
 
 	protected:
 		// update the tree

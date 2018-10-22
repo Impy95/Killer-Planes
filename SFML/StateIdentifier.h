@@ -11,6 +11,7 @@ namespace GEX
 		Game,
 		Pause,
 		GEX,
+		GameOver,
 		None
 	};
 }

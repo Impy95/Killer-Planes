@@ -109,6 +109,19 @@ namespace GEX {
 		return false;
 	}
 
+	bool SceneNode::isMarkedForRemoval() const
+	{
+		return isDestroyed();
+	}
+
+	void SceneNode::removeWrecks()
+	{
+		auto wreckFieldBegin = std::remove_if(children_.begin(), children_.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+		children_.erase(wreckFieldBegin, children_.end());
+
+		std::for_each(children_.begin(), children_.end(), std::mem_fn(&SceneNode::removeWrecks));
+	}
+
 	void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		// default do nothing

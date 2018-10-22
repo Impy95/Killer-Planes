@@ -29,6 +29,8 @@ namespace GEX {
 		void						draw();
 
 		CommandQueue&				getCommandQueue();
+		bool						hasAlivePlayer() const;
+		bool						hasPlayerReachedEnd() const;
 	private:
 		void						loadTextures();
 		void						buildScene();
@@ -45,6 +47,8 @@ namespace GEX {
 		void						guideMissile();
 		void						handleCollisions();
 		bool						matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
+
+		void						destroyEntitiesOutOfView();
 
 	private:
 		enum Layer 
