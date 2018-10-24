@@ -27,7 +27,8 @@ namespace GEX {
 	enum MissionStatus
 	{
 		MissionRunning,
-		MissionFailure
+		MissionFailure,
+		MissionSuccess
 	};
 	class PlayerControl
 	{

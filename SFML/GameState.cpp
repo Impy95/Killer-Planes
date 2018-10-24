@@ -17,6 +17,16 @@
 		GEX::CommandQueue& commands = world_.getCommandQueue();
 		player_.handleRealtimeInput(commands);
 		world_.update(dt, commands);
+		if (!world_.hasAlivePlayer())
+		{
+			player_.setMissionStatus(GEX::MissionStatus::MissionFailure);
+			requestStackPush(GEX::StateID::GameOver);
+		}
+		else if (world_.hasPlayerReachedEnd())
+		{
+			player_.setMissionStatus(GEX::MissionStatus::MissionSuccess);
+			requestStackPush(GEX::StateID::GameOver);
+		}
 
 		return true;
 	}
