@@ -45,7 +45,7 @@ namespace GEX {
 	Aircraft::Aircraft(AircraftType type, const TextureManager & textures)
 		: Entity(TABLE.at(type).hitpoints),
 		type_(type)
-		, sprite_(textures.get(TABLE.at(type).texture))
+		, sprite_(textures.get(TABLE.at(type).texture), TABLE.at(type).textureRect)
 		, healthDisplay_(nullptr)
 		, missileDisplay_(nullptr)
 		, travelDistance_(0.f)
@@ -94,23 +94,23 @@ namespace GEX {
 		attachChild(std::move(missile));
 	}
 
-	TextureID toTextureID(AircraftType type)
-	{
-		switch (type)
-		{
-		case AircraftType::Eagle:
-			return TextureID::Eagle;
-			break;
+	//TextureID toTextureID(AircraftType type)
+	//{
+	//	switch (type)
+	//	{
+	//	case AircraftType::Eagle:
+	//		return TextureID::Eagle;
+	//		break;
 
-		case AircraftType::Raptor:
-			return TextureID::Raptor;
-			break;
+	//	case AircraftType::Raptor:
+	//		return TextureID::Raptor;
+	//		break;
 
-		default:
-			return TextureID::Raptor;
-			break;
-		}
-	}
+	//	default:
+	//		return TextureID::Raptor;
+	//		break;
+	//	}
+	//}
 
 	void Aircraft::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 	{

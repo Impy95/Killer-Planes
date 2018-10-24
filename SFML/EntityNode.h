@@ -1,6 +1,6 @@
 /**
 * @file
-* ResourceIdentifier.h
+* EntityNode.h
 * @author
 * Vaughn Rowse 2018
 * @version 1.0
@@ -26,34 +26,16 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
+
 #pragma once
+
 namespace GEX
 {
-	enum class TextureID {
-		//Landscape,
-		//Space,
-		//Airplane,
-		//Airplanes,
-		//Missile,
-		//Eagle,
-		//Raptor,
-		//Avenger,
-		//Bullet,
-		//HealthRefill,
-		//MissileRefill,
-		//FireSpread,
-		//FireRate,
-
-		Face,
-		TitleScreen,
-		Entities,
-		Jungle,
-		Explosion,
-		Particle,
-		FinishLine
-	};
-	enum class FontID
+	class EntityNode
 	{
-		Main
+	public:
+		EntityNode();
+		~EntityNode();
 	};
 }
+

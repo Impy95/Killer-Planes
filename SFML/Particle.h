@@ -1,6 +1,6 @@
 /**
 * @file
-* ResourceIdentifier.h
+* Particle.h
 * @author
 * Vaughn Rowse 2018
 * @version 1.0
@@ -26,34 +26,25 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
+
 #pragma once
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/System/Time.hpp>
+
 namespace GEX
 {
-	enum class TextureID {
-		//Landscape,
-		//Space,
-		//Airplane,
-		//Airplanes,
-		//Missile,
-		//Eagle,
-		//Raptor,
-		//Avenger,
-		//Bullet,
-		//HealthRefill,
-		//MissileRefill,
-		//FireSpread,
-		//FireRate,
-
-		Face,
-		TitleScreen,
-		Entities,
-		Jungle,
-		Explosion,
-		Particle,
-		FinishLine
-	};
-	enum class FontID
+	struct Particle
 	{
-		Main
+		enum class Type
+		{
+			Propellant,
+			Smoke,
+			ParticleCount
+		};
+
+		sf::Vector2f	position;
+		sf::Color		color;
+		sf::Time		lifetime;
 	};
 }

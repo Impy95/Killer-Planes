@@ -31,6 +31,7 @@
 #include "Aircraft.h"
 #include "Projectile.h"
 #include "Pickup.h"
+#include "Particle.h"
 #include <map>
 
 namespace GEX
@@ -50,6 +51,7 @@ namespace GEX
 		int						hitpoints;
 		float					speed;
 		TextureID				texture;
+		sf::IntRect				textureRect;
 		sf::Time				fireInterval;
 
 		std::vector<Direction>	directions;
@@ -60,16 +62,25 @@ namespace GEX
 		int						damage;
 		float					speed;
 		TextureID				texture;
+		sf::IntRect				textureRect;
 	};
 
 	struct PickupData
 	{
 		std::function<void(Aircraft&)>	action;
 		TextureID						texture;
+		sf::IntRect						textureRect;
+	};
+
+	struct ParticleData
+	{
+		sf::Color	color;
+		sf::Time	lifetime;
 	};
 
 	std::map<Pickup::Type, PickupData> initalizePickupData();
 	std::map<Projectile::Type, ProjectileData> initalizeProjectileData();
-	std::map<AircraftType, AircraftData> initalizeAircraftData(); 
+	std::map<AircraftType, AircraftData> initalizeAircraftData();
+	std::map<Particle::Type, ParticleData> initalizeParticleData();
 }
 
