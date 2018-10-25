@@ -45,7 +45,7 @@ namespace GEX
 
 		data[Pickup::Type::FireSpread].texture = TextureID::Entities;
 		data[Pickup::Type::FireSpread].textureRect = sf::IntRect(80, 64, 40, 40);
-		data[Pickup::Type::FireSpread].action = [](Aircraft& a) {a.increasedFireRate(); };
+		data[Pickup::Type::FireSpread].action = [](Aircraft& a) {a.increasedFireSpread(); };
 
 		data[Pickup::Type::FireRate].texture = TextureID::Entities;
 		data[Pickup::Type::FireRate].textureRect = sf::IntRect(120, 64, 40, 40);
@@ -71,7 +71,7 @@ namespace GEX
 		data[Projectile::Type::Missile].damage = 200;
 		data[Projectile::Type::Missile].speed = 150.f;
 		data[Projectile::Type::Missile].texture = TextureID::Entities;
-		data[Projectile::Type::Missile].textureRect = sf::IntRect(160, 64, 15, 24);
+		data[Projectile::Type::Missile].textureRect = sf::IntRect(160, 64, 15, 32);
 
 		return data;
 	}
@@ -117,7 +117,8 @@ namespace GEX
 	{
 		std::map<Particle::Type, ParticleData> data;
 
-		data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
+		//data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
+		data[Particle::Type::Propellant].color = sf::Color(160, 10, 20);
 		data[Particle::Type::Propellant].lifetime = sf::seconds(0.6f);
 
 		data[Particle::Type::Smoke].color = sf::Color(50, 50, 50);

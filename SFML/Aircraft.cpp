@@ -55,7 +55,7 @@ namespace GEX {
 		, isMarkedForRemoval_(false)
 		, fireRateLevel_(1)
 		, fireSpreadLevel_(1)
-		, missileAmmo_(5)
+		, missileAmmo_(50)
 		, fireCountdown_(sf::Time::Zero)
 		, fireCommand_()
 		, launchMissileCommand_()

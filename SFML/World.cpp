@@ -30,6 +30,8 @@
 #include "Aircraft.h"
 #include "Category.h"
 #include "Pickup.h"
+#include "DataTables.h"
+#include "ParticleNode.h"
 
 namespace GEX {
 	World::World(sf::RenderWindow& window) : window_(window),
@@ -153,7 +155,7 @@ namespace GEX {
 			std::unique_ptr<Aircraft> enemy(new Aircraft(spawnPoint.type, textures_));
 			enemy->setPosition(spawnPoint.x, spawnPoint.y);
 			enemy->setRotation(180);
-			sceneLayer_[Air]->attachChild(std::move(enemy));
+			sceneLayer_[UpperAir]->attachChild(std::move(enemy));
 			enemySpawnPoints_.pop_back();
 		}
 	}
@@ -303,7 +305,10 @@ namespace GEX {
 	void World::loadTextures()
 	{
 		textures_.load(GEX::TextureID::Entities, "Media/Textures/Entities.png");
-		textures_.load(GEX::TextureID::Jungle, "Media/Textures/Jungle.png");
+		textures_.load(GEX::TextureID::Jungle, "Media/Textures/JungleBig.png");
+		textures_.load(GEX::TextureID::Particle, "Media/Textures/Particle.png");
+		textures_.load(GEX::TextureID::Explosion, "Media/Textures/Explosion.png");
+		textures_.load(GEX::TextureID::FinishLine, "Media/Textures/FinishLine.png");
 	}
 
 	void World::buildScene()
@@ -311,11 +316,18 @@ namespace GEX {
 		// Initalize layers
 		for (int i = 0; i < LayerCount; i++)
 		{
-			auto category = (i == Air) ? Category::Type::AirSceneLayer : Category::Type::None;
+			auto category = (i == UpperAir) ? Category::Type::AirSceneLayer : Category::Type::None;
 			SceneNode::Ptr layer(new SceneNode(category));
 			sceneLayer_.push_back(layer.get());
 			sceneGraph_.attachChild(std::move(layer));
 		}
+
+		// Particle Systems
+		std::unique_ptr<ParticleNode> smoke(new ParticleNode(Particle::Type::Smoke, textures_));
+		sceneLayer_[LowerAir]->attachChild(std::move(smoke));
+
+		std::unique_ptr<ParticleNode> fire(new ParticleNode(Particle::Type::Propellant, textures_));
+		sceneLayer_[LowerAir]->attachChild(std::move(fire));
 
 		// background
 		sf::Texture& texture = textures_.get(TextureID::Jungle);
@@ -331,7 +343,7 @@ namespace GEX {
 		leader->setPosition(spawnPosition_);
 		leader->setVelocity(200.f, scrollSpeeds_);
 		playerAircraft_ = leader.get();
-		sceneLayer_[Air]->attachChild(std::move(leader));
+		sceneLayer_[UpperAir]->attachChild(std::move(leader));
 
 		// add enemy aircraft
 		addEnemies();

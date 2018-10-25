@@ -96,7 +96,7 @@
     <ClCompile Include="ParticleNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EntityNode.cpp">
+    <ClCompile Include="EmitterNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,7 +188,7 @@
     <ClInclude Include="ParticleNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityNode.h">
+    <ClInclude Include="EmitterNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -111,8 +111,11 @@ namespace GEX
 		sf::Vector2f size(texture_.getSize());
 		sf::Vector2f half = size / 2.f;
 
+		// clear the vertex array
+		vertexArray_.clear();
+
 		// Refill vertex array
-		for (const Particle& p : particles_)
+		for (const auto& p : particles_)
 		{
 			sf::Vector2f pos = p.position;
 			sf::Color color = p.color;
