@@ -32,12 +32,18 @@
 #include "Command.h"
 #include "Projectile.h"
 #include <SFML/Graphics/Sprite.hpp>
+#include "Animation.h"
 
 namespace GEX {
 	class TextNode;
 
 	// Aircraft types
-	enum class AircraftType { Eagle, Raptor, Avenger };
+	enum class AircraftType
+	{
+		Eagle, 
+		Raptor, 
+		Avenger
+	};
 
 	class Aircraft : public Entity
 	{
@@ -75,9 +81,16 @@ namespace GEX {
 		void			checkPickupDrop(CommandQueue& commands);
 		void			checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
 
+		void			remove() override;
+
+		void			updateRollAnimation();
+
 	private:
 		sf::Sprite		sprite_;
 		AircraftType	type_;
+		Animation		explosion_;
+		bool			showExplosion_;
+
 		TextNode*		healthDisplay_;
 		TextNode*		missileDisplay_;
 
@@ -97,6 +110,8 @@ namespace GEX {
 		Command			fireCommand_;
 		Command			launchMissileCommand_;
 		Command			dropPickupCommand_;
+
+		bool			spawnPickup_;
 	};
 }
 

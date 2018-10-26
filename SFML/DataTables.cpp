@@ -85,6 +85,7 @@ namespace GEX
 		data[AircraftType::Eagle].texture = TextureID::Entities;
 		data[AircraftType::Eagle].textureRect = sf::IntRect(0, 0, 48, 64);
 		data[AircraftType::Eagle].fireInterval = sf::seconds(1);
+		data[AircraftType::Eagle].hasRollAnimation = true;
 
 		// Raptor
 		data[AircraftType::Raptor].hitpoints = 20;
@@ -96,6 +97,7 @@ namespace GEX
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f)); //Emplace back avooid create a temp object - saves resources
 		data[AircraftType::Raptor].directions.emplace_back(Direction(-45.f, 160.f));
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f));
+		data[AircraftType::Raptor].hasRollAnimation = false;
 
 		// Avenger
 		data[AircraftType::Avenger].hitpoints = 40;
@@ -109,6 +111,7 @@ namespace GEX
 		data[AircraftType::Avenger].directions.emplace_back(Direction(-45.f, 100.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(0.f, 50.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f));
+		data[AircraftType::Avenger].hasRollAnimation = false;
 
 		return data;
 	}

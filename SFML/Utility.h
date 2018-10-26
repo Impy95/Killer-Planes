@@ -28,6 +28,7 @@
 */
 #pragma once
 #include <SFML/System/Vector2.hpp>
+#include "Animation.h"
 
 namespace sf
 {
@@ -37,6 +38,7 @@ namespace sf
 
 void centerOrigin(sf::Sprite& sprite);
 void centerOrigin(sf::Text& text);
+void centerOrigin(GEX::Animation& animation);
 
 // Degree/radian conversion
 float			toDegree(float radian);

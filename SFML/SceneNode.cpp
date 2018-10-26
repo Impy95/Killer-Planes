@@ -154,7 +154,7 @@ namespace GEX {
 		drawCurrent(target, states);
 		drawChildren(target, states);
 
-		drawBoundingBox(target, states);
+		//drawBoundingBox(target, states);
 	}
 
 	float distance(const SceneNode& lhs, const SceneNode& rhs)
