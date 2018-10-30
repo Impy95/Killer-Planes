@@ -310,17 +310,24 @@ namespace GEX {
 
 	void Aircraft::updateRollAnimation()
 	{
-		if (getVelocity().x > 0.f)
+		sf::IntRect texture = TABLE.at(type_).textureRect;
+
+		if (TABLE.at(type_).hasRollAnimation)
 		{
-			// set animation to roll right
-		}
-		else if (getVelocity().x < 0.f)
-		{
-			// set animation to roll left
-		}
-		else
-		{
-			// set to default
+			if (getVelocity().x > 0.f)
+			{
+				texture.left += 2 * texture.width;
+			}
+			else if (getVelocity().x < 0.f)
+			{
+				texture.left += texture.width;
+			}
+			else
+			{
+				// set to default
+			}
+
+			sprite_.setTextureRect(texture);
 		}
 	}
 }
