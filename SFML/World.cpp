@@ -34,8 +34,9 @@
 #include "ParticleNode.h"
 
 namespace GEX {
-	World::World(sf::RenderWindow& window) : window_(window),
-		worldView_(window.getDefaultView()),
+	World::World(sf::RenderTarget& outputTarget) 
+		: target_(outputTarget),
+		worldView_(outputTarget.getDefaultView()),
 		textures_(),
 		sceneGraph_(),
 		sceneLayer_(),
@@ -45,6 +46,8 @@ namespace GEX {
 		count_(0),
 		playerAircraft_(nullptr)
 	{
+		sceneTexture_.create(target_.getSize().x, target_.getSize().y);
+
 		loadTextures();
 		buildScene();
 
@@ -216,8 +219,20 @@ namespace GEX {
 
 	void World::draw()
 	{
-		window_.setView(worldView_);
-		window_.draw(sceneGraph_);
+		if (PostEffect::isSupported())
+		{
+			// apply effects
+			sceneTexture_.clear();
+			sceneTexture_.setView(worldView_);
+			sceneTexture_.draw(sceneGraph_);
+			sceneTexture_.display();
+			bloomEffect_.apply(sceneTexture_, target_);
+		}
+		else
+		{
+			target_.setView(worldView_);
+			target_.draw(sceneGraph_);
+		}
 	}
 
 	CommandQueue & World::getCommandQueue()

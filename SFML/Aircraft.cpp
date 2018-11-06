@@ -186,11 +186,13 @@ namespace GEX {
 			explosion_.update(dt);
 			return;
 		}
-		updateRollAnimation();
-		updateMovementPattern(dt);
-		updateTexts();
 		Entity::updateCurrent(dt, commands);
-
+		if (!isDestroyed())
+		{
+			updateRollAnimation();
+			updateMovementPattern(dt);
+			updateTexts();
+		}
 	}
 
 	void Aircraft::updateMovementPattern(sf::Time dt)
