@@ -14,6 +14,7 @@
 
 #include <vector>
 #include "BloomEffect.h"
+#include "SoundPlayer.h"
 
 // forward declaration
 namespace sf
@@ -24,9 +25,10 @@ namespace GEX {
 	class World
 	{
 	public:
-		explicit					World(sf::RenderTarget& outputTarget);
+		explicit					World(sf::RenderTarget& outputTarget, SoundPlayer& sounds);
 
 		void						update(sf::Time dt, CommandQueue& commands);
+		void						updateSounds();
 		void						draw();
 
 		CommandQueue&				getCommandQueue();
@@ -76,6 +78,7 @@ namespace GEX {
 		sf::RenderTexture			sceneTexture_;
 		sf::View					worldView_;
 		TextureManager				textures_;
+		SoundPlayer&				sounds_;
 
 		SceneNode					sceneGraph_;
 		std::vector<SceneNode*>		sceneLayer_;

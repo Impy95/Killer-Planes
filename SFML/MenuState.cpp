@@ -59,6 +59,8 @@ MenuState::MenuState(GEX::StateStack & stack, Context context)
 	options_.push_back(exitOption);
 
 	updateOptionText();
+
+	context.music->play(GEX::MusicID::MenuTheme);
 }
 
 void MenuState::draw()

@@ -36,11 +36,13 @@
 #include "PlayerControl.h"
 #include "TextureManager.h"
 #include "StateStack.h"
+#include "MusicPlayer.h"
+#include "SoundPlayer.h"
 
 class Application
 {
 public:
-	Application();
+								Application();
 
 	void						run();
 
@@ -58,6 +60,9 @@ private:
 	sf::RenderWindow			window_;
 	GEX::PlayerControl			player_;
 	GEX::TextureManager			textures_;
+	GEX::MusicPlayer			music_;
+	GEX::SoundPlayer			sound_;
+
 	GEX::StateStack				stateStack_;
 
 	sf::Text					statisticsText_;

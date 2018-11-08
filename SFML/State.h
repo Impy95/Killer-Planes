@@ -32,10 +32,12 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "StateIdentifier.h"
+#include "MusicPlayer.h"
 
 namespace GEX {
 	// forward declarations
 	class StateStack;
+	class SoundPlayer;
 	class PlayerControl;
 
 	class State
@@ -47,12 +49,16 @@ namespace GEX {
 			Context(
 				sf::RenderWindow&	window,
 				TextureManager&		textures,
-				PlayerControl&		player);
+				PlayerControl&		player,
+				MusicPlayer&		music,
+				SoundPlayer&		sound);
 
 			sf::RenderWindow*	window;
 			TextureManager*		textures;
 			sf::Font*			font;
 			PlayerControl*		player;
+			MusicPlayer*		music;
+			SoundPlayer*		sound;
 		};
 
 	public:

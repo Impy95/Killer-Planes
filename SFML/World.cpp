@@ -32,14 +32,16 @@
 #include "Pickup.h"
 #include "DataTables.h"
 #include "ParticleNode.h"
+#include "SoundNode.h"
 
 namespace GEX {
-	World::World(sf::RenderTarget& outputTarget) 
+	World::World(sf::RenderTarget& outputTarget, SoundPlayer& sounds)
 		: target_(outputTarget),
 		worldView_(outputTarget.getDefaultView()),
 		textures_(),
 		sceneGraph_(),
 		sceneLayer_(),
+		sounds_(sounds),
 		worldBounds_(0.f, 0.f, worldView_.getSize().x, 5000.f),
 		spawnPosition_(worldView_.getSize().x / 2.f, worldBounds_.height - worldView_.getSize().y / 2.f),
 		scrollSpeeds_(-50.f),
@@ -77,6 +79,7 @@ namespace GEX {
 		adaptPlayerPosition();
 
 		spawnEnemies();
+		updateSounds();
 
 		// zoom a little
 		// worldView_.zoom(1.001);	
@@ -93,6 +96,12 @@ namespace GEX {
 		//		sf::Vector2f(	playerAircraft_->getVelocity().x * -1, 
 		//						playerAircraft_->getVelocity().y));
 		//}
+	}
+
+	void World::updateSounds()
+	{
+		sounds_.setListenerPosition(playerAircraft_->getWorldPosition());
+		sounds_.removeStoppedSounds();
 	}
 
 	void World::adaptPlayerPosition()
@@ -135,6 +144,40 @@ namespace GEX {
 
 		addEnemy(AircraftType::Avenger, -70.f, 850.f);
 		addEnemy(AircraftType::Avenger, 70.f, 850.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 1200.f);
+		addEnemy(AircraftType::Raptor, 0.f, 1200.f);
+		addEnemy(AircraftType::Raptor, 250.f, 1200.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 1600.f);
+		addEnemy(AircraftType::Raptor, 0.f, 1600.f);
+		addEnemy(AircraftType::Raptor, 250.f, 1600.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 1400.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1400.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 1800.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1800.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 1850.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1850.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 2200.f);
+		addEnemy(AircraftType::Raptor, 0.f, 2200.f);
+		addEnemy(AircraftType::Raptor, 250.f, 2200.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 2600.f);
+		addEnemy(AircraftType::Raptor, 0.f, 2600.f);
+		addEnemy(AircraftType::Raptor, 250.f, 2600.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 2400.f);
+		addEnemy(AircraftType::Avenger, 70.f, 2400.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 2800.f);
+		addEnemy(AircraftType::Avenger, 70.f, 2800.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 2850.f);
+		addEnemy(AircraftType::Avenger, 70.f, 2850.f);
 
 		std::sort(enemySpawnPoints_.begin(), enemySpawnPoints_.end(), 
 			[](SpawnPoint lhs, SpawnPoint rhs)
@@ -273,6 +316,8 @@ namespace GEX {
 
 				pickup.apply(player);
 				pickup.destroy();
+
+				player.playLocalSound(commandQueue_, SoundEffectID::CollectPickup);
 			}
 			else if (matchesCategories(pair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile)
 			|| (matchesCategories(pair, Category::Type::EnemyAircraft, Category::Type::AlliedProjectile)))
@@ -343,6 +388,10 @@ namespace GEX {
 
 		std::unique_ptr<ParticleNode> fire(new ParticleNode(Particle::Type::Propellant, textures_));
 		sceneLayer_[LowerAir]->attachChild(std::move(fire));
+
+		// sound effects
+		std::unique_ptr<SoundNode> sNode(new SoundNode(sounds_));
+		sceneGraph_.attachChild(std::move(sNode));
 
 		// background
 		sf::Texture& texture = textures_.get(TextureID::Jungle);

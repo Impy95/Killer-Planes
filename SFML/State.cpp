@@ -62,10 +62,14 @@ namespace GEX
 	State::Context::Context(
 		sf::RenderWindow & window, 
 		TextureManager & textures, 
-		PlayerControl & player)
+		PlayerControl & player,
+		MusicPlayer & music,
+		SoundPlayer & sound)
 		
 		: window(&window)
 		, textures(&textures)
 		, player(&player)
+		, music(&music)
+		, sound(&sound)
 	{}
 }
