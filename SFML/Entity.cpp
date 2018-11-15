@@ -9,18 +9,18 @@ namespace GEX {
 
 	}
 
-	void GEX::Entity::setVelocity(sf::Vector2f velocity)
+	void Entity::setVelocity(sf::Vector2f velocity)
 	{
 		velocity_ = velocity;
 	}
 
-	void GEX::Entity::setVelocity(float vx, float vy)
+	void Entity::setVelocity(float vx, float vy)
 	{
 		velocity_.x = vx;
 		velocity_.y = vy;
 	}
 
-	sf::Vector2f GEX::Entity::getVelocity() const
+	sf::Vector2f Entity::getVelocity() const
 	{
 		return velocity_;
 	}
@@ -63,7 +63,12 @@ namespace GEX {
 		return (hitPoints_ <= 0);
 	}
 
-	void GEX::Entity::updateCurrent(sf::Time dt)
+	void Entity::remove()
+	{
+		destroy();
+	}
+
+	void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		move(velocity_ * dt.asSeconds());
 	}

@@ -1,18 +1,17 @@
 #include "SceneNode.h"
 #include "Category.h"
 #include "Command.h"
+#include "Utility.h"
 #include <algorithm>
 #include <cassert>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace GEX {
-	SceneNode::SceneNode()
-		: children_(),
-		parent_(nullptr)
-	{
-	}
-
-
-	SceneNode::~SceneNode()
+	SceneNode::SceneNode(Category::Type category)
+		: children_()
+		, parent_(nullptr)
+		, category_(category)
 	{
 	}
 
@@ -33,10 +32,10 @@ namespace GEX {
 		return result;
 	}
 
-	void SceneNode::update(sf::Time dt)
+	void SceneNode::update(sf::Time dt, CommandQueue& commands)
 	{
-		updateCurrent(dt);
-		updateChildren(dt);
+		updateCurrent(dt, commands);
+		updateChildren(dt, commands);
 	}
 
 	void SceneNode::onCommand(const Command& command, sf::Time dt)
@@ -52,7 +51,7 @@ namespace GEX {
 
 	unsigned int SceneNode::getCategory() const
 	{
-		return Category::Type::None;
+		return category_;
 	}
 
 	sf::Vector2f SceneNode::getWorldPosition() const
@@ -70,15 +69,68 @@ namespace GEX {
 		return transform;
 	}
 
-	void SceneNode::updateCurrent(sf::Time dt)
+	sf::FloatRect SceneNode::getBoundingBox() const
+	{
+		return sf::FloatRect();
+	}
+
+	void SceneNode::drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		sf::FloatRect rect = getBoundingBox();
+
+		sf::RectangleShape box;
+		box.setPosition(sf::Vector2f(rect.left, rect.top));
+		box.setSize(sf::Vector2f(rect.width, rect.height));
+		box.setFillColor(sf::Color::Transparent);
+		box.setOutlineColor(sf::Color::Cyan);
+		box.setOutlineThickness(1.f);
+
+		target.draw(box);
+	}
+
+	void SceneNode::checkSceneCollision(SceneNode& rootNode, std::set<Pair>& collisionPair)
+	{
+		checkNodeCollision(rootNode, collisionPair);
+		for (Ptr& c : rootNode.children_)
+			checkSceneCollision(*c, collisionPair);
+	}
+
+	void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPair)
+	{
+		if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
+			collisionPair.insert(std::minmax(this, &node));
+
+		for (Ptr& c : children_)
+			c->checkNodeCollision(node, collisionPair);
+	}
+
+	bool SceneNode::isDestroyed() const
+	{
+		return false;
+	}
+
+	bool SceneNode::isMarkedForRemoval() const
+	{
+		return isDestroyed();
+	}
+
+	void SceneNode::removeWrecks()
+	{
+		auto wreckFieldBegin = std::remove_if(children_.begin(), children_.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+		children_.erase(wreckFieldBegin, children_.end());
+
+		std::for_each(children_.begin(), children_.end(), std::mem_fn(&SceneNode::removeWrecks));
+	}
+
+	void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		// default do nothing
 	}
 
-	void SceneNode::updateChildren(sf::Time dt)
+	void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 	{
 		for (Ptr& child : children_)
-			child->update(dt);
+			child->update(dt, commands);
 	}
 
 	void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -101,6 +153,18 @@ namespace GEX {
 
 		drawCurrent(target, states);
 		drawChildren(target, states);
+
+		//drawBoundingBox(target, states);
+	}
+
+	float distance(const SceneNode& lhs, const SceneNode& rhs)
+	{
+		return length(lhs.getWorldPosition() - rhs.getWorldPosition());
+	}
+
+	bool collision(const SceneNode & lhs, const SceneNode & rhs)
+	{
+		return lhs.getBoundingBox().intersects(rhs.getBoundingBox());
 	}
 
 }

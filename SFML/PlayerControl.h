@@ -18,8 +18,17 @@ namespace GEX {
 		MoveRight,
 		MoveUp,
 		MoveDown,
+		Fire,
+		LaunchMissile,
 		RR,
 		RL
+	};
+
+	enum MissionStatus
+	{
+		MissionRunning,
+		MissionFailure,
+		MissionSuccess
 	};
 	class PlayerControl
 	{
@@ -29,6 +38,9 @@ namespace GEX {
 		void			handleEvent(const sf::Event& event, CommandQueue& commands);
 		void			handleRealtimeInput(CommandQueue& commands);
 
+		void			setMissionStatus(MissionStatus status);
+		MissionStatus	getMissionStatus() const;
+
 	private:
 		void			initalizeActions();
 		static bool		isRealTimeAction(Action action);
@@ -37,6 +49,8 @@ namespace GEX {
 	private:
 		std::map<sf::Keyboard::Key, Action>		keyBindings_;
 		std::map<Action, Command>				actionBindings_;
+
+		MissionStatus							currentMissionStatus_;
 	};
 }
 

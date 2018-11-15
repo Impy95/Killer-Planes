@@ -48,12 +48,12 @@ namespace GEX {
 			while (timeSinceLastUpdate > SPF)
 			{
 				updateStatistics(SPF);
-				update(SPF);
+				//update(SPF);
 				timeSinceLastUpdate -= SPF;
 			}
 
 			updateStatistics(timeSinceLastUpdate);
-			update(timeSinceLastUpdate);
+			//update(timeSinceLastUpdate);
 
 			render();
 		}
@@ -122,12 +122,12 @@ namespace GEX {
 	//	window_.draw(boundingBox);
 	//}
 
-	void Game::update(sf::Time deltaTime)
+	void Game::update(sf::Time deltaTime, CommandQueue& commands)
 	{
 		//
 		// update
 		//
-		world_.update(deltaTime);
+		world_.update(deltaTime, commands);
 
 		//const float PLAYER_SPEED = 1.0f;
 
